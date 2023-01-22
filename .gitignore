@@ -1,0 +1,10 @@
+*cache*
+.idea
+.vscode
+/dist
+.venv
+/venv
+.vim
+.github
+*coverage*
+*Zone.Identifier*

@@ -3,7 +3,7 @@ full-test:
 light-test:
 	poetry run pytest --no-summary --disable-pytest-warnings
 lint:
-	poetry run flake8 gendiff tests
+	poetry run flake8 page_analyzer tests
 check: light-test lint
 push: check
 	git push
@@ -20,5 +20,14 @@ package-install:
 test-coverage:
 	poetry run pytest --cov=gendiff --cov-report xml
 
+
+# DEV
+
+dev:
+	poetry run flask --app page_analyzer:app run
+
+
+#  PROD
+
 start:
-	poetry run gunicorn --workers=4 --bind=127.0.0.1:5000 wsgi:app
+	poetry run gunicorn --workers=4 --bind=127.0.0.1:5000 page_analyzer:app
