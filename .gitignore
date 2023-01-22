@@ -5,6 +5,5 @@
 .venv
 /venv
 .vim
-.github
 *coverage*
 *Zone.Identifier*
