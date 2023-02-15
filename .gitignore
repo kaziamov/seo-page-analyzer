@@ -7,3 +7,4 @@
 .vim
 *coverage*
 *Zone.Identifier*
+.env
