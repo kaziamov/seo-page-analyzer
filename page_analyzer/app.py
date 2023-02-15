@@ -1,17 +1,14 @@
-from flask import Flask, render_template, request, jsonify
-import psycopg2
-from dotenv import load_dotenv
-
+from flask import Flask, render_template  # , request, jsonify
+# import psycopg2
+# from dotenv import load_dotenv
 
 
 app = Flask(__name__)
 
 
 def is_valid(data):
-    checks = [
-        len(data['url']) < 255,
-        data['url'][0:7] == 'https://' or data['url'][0:6] == 'http://',
-        ]
+    checks = [len(data['url']) < 255,
+              data['url'][0:7] == 'https://' or data['url'][0:6] == 'http://']
     return all(checks)
 
 
