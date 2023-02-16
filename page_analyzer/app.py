@@ -1,36 +1,53 @@
-from flask import Flask, render_template  # , request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 # import psycopg2
 # from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 
 app = Flask(__name__)
 
+title = "Page Analyzer"
+
 
 def is_valid(data):
-    checks = [len(data['url']) < 255,
-              data['url'][0:7] == 'https://' or data['url'][0:6] == 'http://']
-    return all(checks)
+    checker = urlparse(data)
+    return all([checker.scheme, checker.netloc, checker.path, len(data) < 255])
 
 
-@app.route("/")
-def hello_world():
-    return render_template("index.html")
+@app.get("/")
+def root():
+    return redirect(url_for('home'))
+
+
+@app.route('/home')
+def home():
+    return render_template("home.html", title=title)
 
 
 @app.route("/url/<int:id>")
 def get_url(id):
-    # url = request.args.get('url')
-    # if is_valid(url):
-    #     error = None
-    return render_template("index.html")
+    return render_template("index.html", title=title)
+
+
+@app.route("/invalid_url")
+def invalid_url():
+    return render_template("invalid_url.html", title=title)
+
+
+@app.route("/add_new_url", methods=["POST"])
+def add_new_url():
+    url = request.form.get("url")
+    if is_valid(url):
+        print(f'URL {url} is OK')
+        return redirect(url_for('urls'))
+    else:
+        print(f'URL {url} not OK :(')
+        return redirect(url_for('invalid_url'))
 
 
 @app.route("/urls")
-def get_urls():
-    # url = request.args.get('url')
-    # if is_valid(url
-    #     error = None
-    return render_template("index.html")
+def urls():
+    return render_template("urls.html", title=title)
 
 
 @app.errorhandler(404)
