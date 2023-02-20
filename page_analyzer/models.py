@@ -13,7 +13,7 @@ class Database:
             database=DB_PASS)
         try:
             self.cursor = self.connection.cursor()
-        except:
+        except psycopg2.OperationalError:
             print('Can`t establish connection to database')
 
     def create_new_db(self):
@@ -40,7 +40,3 @@ class Database:
     def get_all_urls(self):
         self.cursor.execute("""SELECT * FROM urls ORDER BY created_at DESC""")
         return self.cursor.fetchall()
-
-# if __name__ == '__main__':
-#     d = Database()
-#     d.create_new_db().take_command("""INSERT INTO urls VALUES (1, "https://example/1", 2022-01-01);""")

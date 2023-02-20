@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-# import psycopg2
-# from dotenv import load_dotenv
 from urllib.parse import urlparse
-from datetime import timedelta, datetime
+from datetime import timedelta
 from page_analyzer.models import Database
 
 
@@ -42,7 +40,7 @@ def urls():
         url = request.form.get("url")
         if is_valid(url):
             id = d.is_url_exist(url)
-            if id != False:
+            if id is not False:
                 flash("Страница уже существует")
                 return urls_id(id=id)
             d.add_new_url()
@@ -56,12 +54,6 @@ def urls():
         urls = d.get_all_urls()
         return render_template("urls.html", title=title, urls=urls)
 
-
-def get_flash(text):
-    messages = {
-        "check_failed": "Произошла ошибка при проверке",
-        "check_success": "Страница успешно проверена"
-        }
 
 @app.errorhandler(404)
 def not_found(error):
