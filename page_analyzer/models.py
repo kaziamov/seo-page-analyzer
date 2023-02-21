@@ -8,9 +8,9 @@ class Database:
         self.connection = psycopg2.connect(
             host=DB_HOST,
             port=DB_PORT,
-            user=DB_NAME,
-            password=DB_USER,
-            database=DB_PASS)
+            user=DB_USER,
+            password=DB_PASS,
+            database=DB_NAME)
         try:
             self.cursor = self.connection.cursor()
         except psycopg2.OperationalError:

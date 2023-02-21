@@ -43,7 +43,7 @@ def urls():
             if id is not False:
                 flash("Страница уже существует")
                 return urls_id(id=id)
-            d.add_new_url()
+            d.add_new_url(url)
             flash("Страница успешно добавлена")
             id = d.get_data("""SELECT id FROM urls WHERE name='{}'""".format(url))[0]
             return urls_id(id=id)
