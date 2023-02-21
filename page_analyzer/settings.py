@@ -13,5 +13,3 @@ DB_PORT = parsed_url.port
 DB_NAME = parsed_url.path[1:]
 DB_USER = parsed_url.username
 DB_PASS = parsed_url.password
-
-# print(DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER)
