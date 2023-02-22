@@ -16,7 +16,7 @@ class Database:
         try:
             self.cursor = self.connection.cursor()
         except psycopg2.OperationalError:
-            print('Can`t establish connection to database')
+            return self.create_cursor()
         return self
 
     def delete_all_data(self):
