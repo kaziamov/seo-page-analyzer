@@ -35,7 +35,7 @@ class Database:
         return False
 
     def get_data_by_id(self, id):
-        self.cursor.execute(f"""SELECT * FROM urls WHERE id=%s ;""", (id, ))
+        self.cursor.execute("""SELECT * FROM urls WHERE id=%s ;""", (id, ))
         return self.cursor.fetchone()
 
     def get_all_urls(self):
@@ -50,9 +50,8 @@ class Database:
             return True
         return False
 
-
     def get_checks_by_id(self, id):
-        self.cursor.execute(f"""SELECT * FROM url_checks WHERE url_id=%s ORDER BY created_at DESC ;""", (id, ))
+        self.cursor.execute("""SELECT * FROM url_checks WHERE url_id=%s ORDER BY created_at DESC ;""", (id, ))
         return self.cursor.fetchall()
 
     def add_new_check(self, url_id, status_code, h1, title, description):
