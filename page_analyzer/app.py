@@ -24,9 +24,25 @@ def home():
 
 @app.route("/urls/<int:id>")
 def urls_id(id):
-    id_, name, date = d.get_data("""SELECT * FROM urls WHERE id='{}'""".format(id))
+    date = ''
+    checks = []
+    url_data = d.get_data_by_id(id)
+    if url_data:
+        name = url_data[1]
+    if d.is_checks_exist(id):
+        checks = d.get_checks_by_id(id)
+        date = checks[0][6]
     return render_template("urls_id.html", title=name,
-                           name=name, date=date, id=id)
+                           name=name, date=date, id=id, checks=checks)
+
+
+@app.route("/urls/<int:id>/checks", methods=['POST'])
+def url_check(id):
+    # if request.method == 'POST':
+    # # id_, name, date = d.get_data_by_id(id)
+    #     pass
+    d.add_new_check(id, '200', 'Title 1', 'Title 2', 'Desc 1')
+    return redirect(url_for('urls_id', id=id))
 
 
 @app.route("/invalid_url")
@@ -38,18 +54,23 @@ def invalid_url():
 def urls():
     if request.method == 'POST':
         url = request.form.get("url")
+
         if is_valid(url):
+
             id = d.is_url_exist(url)
             if id is not False:
                 flash("Страница уже существует")
                 return urls_id(id=id)
+
             d.add_new_url(url)
             flash("Страница успешно добавлена")
-            id = d.get_data("""SELECT id FROM urls WHERE name='{}'""".format(url))[0]
+            id = d.is_url_exist(url)
             return urls_id(id=id)
+
         else:
             flash("Некорректный URL")
             return redirect(url_for('home'))
+
     else:
         urls = d.get_all_urls()
         return render_template("urls.html", title=title, urls=urls)

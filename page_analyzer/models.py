@@ -21,22 +21,41 @@ class Database:
         return self
 
     def add_new_url(self, url):
-        self.cursor.execute(f'''INSERT INTO urls (name, created_at) VALUES ('{url}', '{datetime.now()}')''')
+        self.cursor.execute('''INSERT INTO urls (name, created_at) VALUES (%s, %s) ;''', (url, datetime.now()))
+        # self.cursor.execute(f'''INSERT INTO urls (name, created_at) VALUES ('{url}', '{datetime.now()}')''')
         self.connection.commit()
         return self
 
     def is_url_exist(self, url):
-        self.cursor.execute(f"""SELECT * FROM urls WHERE name='{url}'""")
+        self.cursor.execute("""SELECT * FROM urls WHERE name=%s ;""", (url, ))
         response = self.cursor.fetchone()
         self.connection.commit()
         if response:
             return response[0]
         return False
 
-    def get_data(self, command):
-        self.cursor.execute(command)
+    def get_data_by_id(self, id):
+        self.cursor.execute(f"""SELECT * FROM urls WHERE id=%s ;""", (id, ))
         return self.cursor.fetchone()
 
     def get_all_urls(self):
-        self.cursor.execute("""SELECT * FROM urls ORDER BY created_at DESC""")
+        self.cursor.execute("""SELECT * FROM urls ORDER BY created_at DESC ;""")
         return self.cursor.fetchall()
+
+    def is_checks_exist(self, id):
+        self.cursor.execute("""SELECT * FROM url_checks WHERE url_id=%s ;""", (id, ))
+        response = self.cursor.fetchone()
+        self.connection.commit()
+        if response:
+            return True
+        return False
+
+
+    def get_checks_by_id(self, id):
+        self.cursor.execute(f"""SELECT * FROM url_checks WHERE url_id=%s ORDER BY created_at DESC ;""", (id, ))
+        return self.cursor.fetchall()
+
+    def add_new_check(self, url_id, status_code, h1, title, description):
+        self.cursor.execute('''INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s, %s, %s, %s, %s, %s) ;''', (url_id, status_code, h1, title, description, datetime.now()))
+        self.connection.commit()
+        return self
