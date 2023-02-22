@@ -59,9 +59,6 @@ class Database:
                                 ORDER BY url_id, created_at DESC) AS url_checks ON urls.id = url_checks.url_id
                             ORDER BY urls.id DESC ;""")
         return self.cursor.fetchall()
-    # def get_all_urls(self):
-    #     self.cursor.execute("""SELECT * FROM urls ORDER BY created_at DESC ;""")
-    #     return self.cursor.fetchall()
 
     def get_all_time_checks(self):
         self.create_cursor()
@@ -87,7 +84,3 @@ class Database:
         self.cursor.execute('''INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s, %s, %s, %s, %s, %s) ;''', (url_id, status_code, h1, title, description, datetime.now()))
         self.connection.commit()
         return self
-
-if __name__ == '__main__':
-    d = Database()
-    d.delete_all_data()
