@@ -16,8 +16,13 @@ class Database:
         except psycopg2.OperationalError:
             print('Can`t establish connection to database')
 
+    def delete_all_data(self):
+        # self.cursor.execute("""DROP TABLE url_checks ;""")
+        # self.cursor.execute("""DROP TABLE urls ;""")
+        return self
+
     def create_new_db(self):
-        # self.take_command("""CREATE TABLE urls (id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name varchar(255), created_at TIMESTAMP)""")
+        # self.cursor.execute("""CREATE TABLE urls (id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name varchar(255), created_at TIMESTAMP)""")
         return self
 
     def add_new_url(self, url):
@@ -39,7 +44,19 @@ class Database:
         return self.cursor.fetchone()
 
     def get_all_urls(self):
-        self.cursor.execute("""SELECT * FROM urls ORDER BY created_at DESC ;""")
+        self.cursor.execute("""SELECT urls.id, urls.name, url_checks.created_at, url_checks.status_code
+                            FROM urls LEFT JOIN (
+                                SELECT DISTINCT ON (url_id) url_id, created_at, status_code
+                                FROM url_checks
+                                ORDER BY url_id, created_at DESC) AS url_checks ON urls.id = url_checks.url_id
+                            ORDER BY urls.id DESC ;""")
+        return self.cursor.fetchall()
+    # def get_all_urls(self):
+    #     self.cursor.execute("""SELECT * FROM urls ORDER BY created_at DESC ;""")
+    #     return self.cursor.fetchall()
+
+    def get_all_time_checks(self):
+        self.cursor.execute("""SELECT created_at FROM url_checks ORDER BY id DESC ;""")
         return self.cursor.fetchall()
 
     def is_checks_exist(self, id):

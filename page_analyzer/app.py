@@ -29,9 +29,9 @@ def urls_id(id):
     url_data = d.get_data_by_id(id)
     if url_data:
         name = url_data[1]
+        date = url_data[2]
     if d.is_checks_exist(id):
         checks = d.get_checks_by_id(id)
-        date = checks[0][6]
     return render_template("urls_id.html", title=name,
                            name=name, date=date, id=id, checks=checks)
 
@@ -73,6 +73,7 @@ def urls():
 
     else:
         urls = d.get_all_urls()
+        print(urls)
         return render_template("urls.html", title=title, urls=urls)
 
 
