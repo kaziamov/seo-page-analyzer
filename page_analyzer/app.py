@@ -40,6 +40,7 @@ def url_check(id):
         data = get_data(url)
         if data:
             add_new_check(id, *data)
+            flash('Страница успешно проверена')
         else:
             flash('Произошла ошибка при проверке')
     return redirect(url_for('urls_id', id=id))
