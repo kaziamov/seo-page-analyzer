@@ -49,22 +49,22 @@ def url_check(id):
 @app.route("/urls", methods=["GET", "POST"])
 def urls():
     if request.method == 'POST':
-        url = request.form.get("url")
+        url = request.form.get("url").strip()
         if is_valid(url):
             id = is_url_exist(url)
             if id is not False:
                 flash("Страница уже существует", 'primary')
                 return urls_id(id=id)
-            add_new_url(url)
-            flash("Страница успешно добавлена", 'success')
-            id = is_url_exist(url)
-            return urls_id(id=id)
+            else:
+                add_new_url(url)
+                flash("Страница успешно добавлена", 'success')
+                id = is_url_exist(url)
+                return urls_id(id=id)
         else:
             flash("Некорректный URL", 'danger')
             return redirect(url_for('home'))
     else:
         urls = get_all_urls()
-        print('GET ALL URLS', urls)
         return render_template("urls.html", title=title, urls=urls)
 
 

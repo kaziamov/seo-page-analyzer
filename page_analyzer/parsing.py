@@ -14,7 +14,7 @@ def get_data(url):
     try:
         responce = requests.get(url)
     except requests.exceptions.ConnectionError:
-        return ()
+        return False
     return parse_data(responce)
 
 
