@@ -49,7 +49,7 @@ def url_check(id):
 @app.route("/urls", methods=["GET", "POST"])
 def urls():
     if request.method == 'POST':
-        url = request.form.get("url").strip() + '/'
+        url = request.form.get("url").strip()
         if is_valid(url):
             id = is_url_exist(url)
             if id is not False:

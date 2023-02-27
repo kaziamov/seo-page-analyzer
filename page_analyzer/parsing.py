@@ -34,6 +34,6 @@ def parse_data(data):
     h1 = html.find('h1')
     desc = html.find("meta", attrs={'name': 'description'})
     return (status,
-            title.string if title else '',
             h1.get_text() if h1 else '',
+            title.string if title else '',
             desc['content'] if desc else '')

@@ -78,8 +78,9 @@ def get_checks_by_id(id):
     """Return all checks for selected id"""
     c = make_connection()
     cursor = c.cursor()
-    cursor.execute("""SELECT * FROM url_checks WHERE url_id=%s ORDER BY created_at DESC ;""", (id, ))
+    cursor.execute("""SELECT id, status_code, h1, title, description, created_at FROM url_checks WHERE url_id=%s ORDER BY id DESC ;""", (id, ))
     result = cursor.fetchall()
+    print(result)
     c.commit()
     c.close()
     return result
