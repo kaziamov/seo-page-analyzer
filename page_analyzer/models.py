@@ -18,7 +18,6 @@ def add_new_url(url):
     c = make_connection()
     cursor = c.cursor()
     cursor.execute('''INSERT INTO urls (name, created_at) VALUES (%s, %s) ;''', (url, datetime.now()))
-    # cursor.execute(f'''INSERT INTO urls (name, created_at) VALUES ('{url}', '{datetime.now()}')''')
     c.commit()
     c.close()
 
@@ -80,7 +79,6 @@ def get_checks_by_id(id):
     cursor = c.cursor()
     cursor.execute("""SELECT id, status_code, h1, title, description, created_at FROM url_checks WHERE url_id=%s ORDER BY id DESC ;""", (id, ))
     result = cursor.fetchall()
-    print(result)
     c.commit()
     c.close()
     return result

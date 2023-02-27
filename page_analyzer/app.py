@@ -54,15 +54,16 @@ def urls():
             id = is_url_exist(url)
             if id is not False:
                 flash("Страница уже существует", 'primary')
-                return urls_id(id=id)
             else:
                 add_new_url(url)
                 flash("Страница успешно добавлена", 'success')
                 id = is_url_exist(url)
-                return urls_id(id=id)
+            return redirect(url_for('urls_id', id=id))
+
         else:
             flash("Некорректный URL", 'danger')
             return redirect(url_for('home'))
+
     else:
         urls = get_all_urls()
         return render_template("urls.html", title=title, urls=urls)
