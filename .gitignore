@@ -8,3 +8,4 @@
 *coverage*
 *Zone.Identifier*
 .env
+test_db.sql

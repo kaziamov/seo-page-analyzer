@@ -42,9 +42,10 @@ def url_check(id):
         if data:
             add_new_check(id, *data)
             flash('Страница успешно проверена', 'success')
+            return redirect(url_for('urls_id', id=id))
         else:
             flash('Произошла ошибка при проверке', 'danger')
-    return redirect(url_for('urls_id', id=id))
+            return redirect(url_for('urls_id', id=id))
 
 
 @app.route("/urls", methods=["GET", "POST"])
@@ -63,7 +64,7 @@ def urls():
 
         else:
             flash("Некорректный URL", 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('home'), 422)
 
     else:
         urls = get_all_urls()
