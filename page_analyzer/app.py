@@ -16,12 +16,12 @@ title = "Page Analyzer"
 
 
 @app.route('/')
-def home():
-    return render_template("home.html", title=title)
+def home(status=200):
+    return render_template("home.html", title=title), status
 
 
 @app.route("/urls/<int:id>")
-def urls_id(id):
+def urls_id(id, status=200):
     name = ''
     date = ''
     checks = []
@@ -31,7 +31,7 @@ def urls_id(id):
         date = url_data[2]
     if is_checks_exist(id):
         checks = get_checks_by_id(id)
-    return render_template("urls_id.html", title=name, name=name, date=date, id=id, checks=checks)
+    return render_template("urls_id.html", title=name, name=name, date=date, id=id, checks=checks), status
 
 
 @app.route("/urls/<int:id>/checks", methods=['POST'])
@@ -45,7 +45,7 @@ def url_check(id):
             return redirect(url_for('urls_id', id=id))
         else:
             flash('Произошла ошибка при проверке', 'danger')
-            return redirect(url_for('urls_id', id=id))
+            return redirect(url_for('urls_id', id=id, status=422))
 
 
 @app.route("/urls", methods=["GET", "POST"])
@@ -64,7 +64,7 @@ def urls():
 
         else:
             flash("Некорректный URL", 'danger')
-            return redirect(url_for('home'), 422)
+            return redirect(url_for('home', status=422))
 
     else:
         urls = get_all_urls()
