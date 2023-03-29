@@ -26,6 +26,9 @@ test-coverage:
 dev:
 	poetry run flask --app page_analyzer:app --debug run
 
+server:
+	sudo service postgresql start
+
 
 #  PROD
 PORT ?= 8000
