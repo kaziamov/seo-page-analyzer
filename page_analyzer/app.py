@@ -16,8 +16,8 @@ title = "Page Analyzer"
 
 
 @app.route('/')
-def home(status=200):
-    return render_template("home.html", title=title), status
+def home(url='', status=200):
+    return render_template("home.html", title=title, url=url), status
 
 
 @app.route("/urls/<int:id>")
@@ -45,7 +45,7 @@ def url_check(id):
             return redirect(url_for('urls_id', id=id))
         else:
             flash('Произошла ошибка при проверке', 'danger')
-            return redirect('/urls_id', id=id, code=422)
+            return redirect(url_for('urls_id', id=id, status=422))
 
 
 @app.route("/urls", methods=["GET", "POST"])
@@ -64,7 +64,7 @@ def urls():
 
         else:
             flash("Некорректный URL", 'danger')
-            return redirect('/home', code=422)
+            return render_template("home.html", title=title, url=url), 422
 
     else:
         urls = get_all_urls()
