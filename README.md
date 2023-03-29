@@ -4,7 +4,7 @@
 <!-- [![Test Coverage](https://api.codeclimate.com/v1/badges/b5ac9e4ee72c50421f24/test_coverage)](https://codeclimate.com/github/kaziamov/python-project-83/test_coverage) -->
 # SEO Page Analyzer
 
-Web-service for check status of websites. [Live Demo](https://seo-page-analyzer-production-8868.up.railway.app/)
+Web-service for check status of websites. [Live Demo](https://seo-page-analyzer.onrender.com)
 
 
 ## Features
