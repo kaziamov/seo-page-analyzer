@@ -64,7 +64,7 @@ def urls():
 
         else:
             flash("Некорректный URL", 'danger')
-            return render_template("home.html", title=title, url=url), 422
+            return render_template("home.html", title=title, url=url), 302
 
     else:
         urls = get_all_urls()
