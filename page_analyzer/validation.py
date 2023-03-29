@@ -11,4 +11,4 @@ def is_valid(data):
         bool
     """
     checker = urlparse(data)
-    return all([checker.scheme, checker.netloc, checker.path, len(data) < 255])
+    return all([checker.scheme, checker.netloc, len(data) < 255])
