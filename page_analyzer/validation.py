@@ -1,4 +1,5 @@
-from urllib.parse import urlparse
+# from urllib.parse import urlparse
+import validators
 
 
 def is_valid(data):
@@ -10,5 +11,6 @@ def is_valid(data):
     Returns:
         bool
     """
-    checker = urlparse(data)
-    return all([checker.scheme, checker.netloc, len(data) < 255])
+    # checker = urlparse(data)
+    # return all([checker.scheme, checker.netloc, len(data) < 255])
+    return all([validators.url(data), len(data) < 255])
