@@ -3,7 +3,7 @@ full-test:
 light-test:
 	poetry run pytest --no-summary --disable-pytest-warnings
 lint:
-	poetry run flake8 page_analyzer tests
+	poetry run flake8 page_analyzer
 check: light-test lint
 push: check
 	git push
