@@ -16,6 +16,10 @@ def get_data(url):
         responce = requests.get(url)
     except requests.exceptions.ConnectionError:
         return False
+    try:
+        responce.raise_for_status()
+    except requests.HTTPError:
+        return False
     return parse_data(responce)
 
 
