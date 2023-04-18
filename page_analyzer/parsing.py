@@ -34,7 +34,7 @@ def parse_data(data):
         tuple
     """
     max_len = 254
-    html = bs4.BeautifulSoup(data.text)
+    html = bs4.BeautifulSoup(data.text, features="html.parser")
     status = data.status_code
     title = html.title
     h1 = html.find('h1')
