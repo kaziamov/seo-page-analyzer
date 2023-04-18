@@ -8,7 +8,6 @@ from page_analyzer.validation import is_valid
 from page_analyzer.db_connect import conn_pool
 
 
-
 app = Flask(__name__)
 app.secret_key = 'test'
 app.url_map.strict_slashes = False
@@ -16,13 +15,6 @@ app.permanent_session_lifetime = timedelta(hours=24)
 
 title = "Page Analyzer"
 
-class getcursor(object):
-    def __enter__(self):
-        con = conn_pool.getconn()
-        return con
-
-    def __exit__(self, *args):
-        conn_pool.putconn(con)
 
 @app.route('/')
 def home(url='', status=200):

@@ -1,4 +1,3 @@
-from psycopg2 import pool
 from datetime import datetime
 
 

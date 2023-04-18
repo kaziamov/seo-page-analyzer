@@ -24,4 +24,5 @@ def create_pool(min_conn=1, max_conn=5):
                                      password=DB_PASS,
                                      database=DB_NAME)
 
+
 conn_pool = create_pool()
