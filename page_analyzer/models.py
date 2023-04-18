@@ -61,5 +61,5 @@ def add_new_check(conn, data):
     # print(*data, sep="\n")
     time_ = datetime.now()
     # url_id, status_code, h1, title, description = data
-    cur = conn.cursor()
-    cur.execute('''INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s, %s, %s, %s, %s, %s) ;''', (*data, time_))
+    with conn.cursor() as cur:
+        cur.execute('''INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s, %s, %s, %s, %s, %s) ;''', (*data, time_))
