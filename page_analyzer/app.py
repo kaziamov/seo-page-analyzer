@@ -4,7 +4,7 @@ from datetime import timedelta
 
 from page_analyzer.models import is_checks_exist, get_data_by_id, get_checks_by_id, get_all_urls, add_new_check, add_new_url, is_url_exist
 from page_analyzer.parsing import get_data
-from page_analyzer.validation import is_valid
+from page_analyzer.validation import is_valid, normalize_url
 from page_analyzer.db_connect import get_connection
 
 
@@ -57,14 +57,15 @@ def urls():
     with get_connection() as conn:
         if request.method == 'POST':
             url = request.form.get("url").strip()
-            if is_valid(url):
-                id = is_url_exist(conn, url)
+            correct_url = normalize_url(url)
+            if correct_url:
+                id = is_url_exist(conn, correct_url)
                 if id is not False:
                     flash("Страница уже существует", 'primary')
                 else:
-                    add_new_url(conn, url)
+                    add_new_url(conn, correct_url)
                     flash("Страница успешно добавлена", 'success')
-                    id = is_url_exist(conn, url)
+                    id = is_url_exist(conn, correct_url)
                 return redirect(url_for('urls_id', id=id))
 
             flash("Некорректный URL", 'danger')
