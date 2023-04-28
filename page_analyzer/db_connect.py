@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import pool
 from page_analyzer.settings import DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME
+from contextlib import contextmanager
 
 
 def create_connection(*args, **kwargs):
@@ -23,6 +24,22 @@ def create_pool(min_conn=1, max_conn=5):
                                      user=DB_USER,
                                      password=DB_PASS,
                                      database=DB_NAME)
+
+
+@contextmanager
+def get_connection():
+    """Get connection from pool or error if connection doesn't work"""
+    conn = None
+    try:
+        conn = conn_pool.getconn()
+        yield conn
+        conn.commit()
+    except Exception as error:
+        conn.rollback()
+        raise Exception(f'Connection lost. Changes abort. {error}')
+    finally:
+        if conn:
+            conn_pool.putconn(conn)
 
 
 conn_pool = create_pool()
