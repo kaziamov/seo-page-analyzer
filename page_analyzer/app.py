@@ -54,11 +54,18 @@ def url_check(id):
 
 @app.route("/urls", methods=["GET", "POST"])
 def urls():
+    messages = {'empty_url': ('URL обязателен', 'danger'),
+                'too_long': ('URL превышает 255 символов', 'danger'),
+                'url_exist': ("Страница уже существует", 'primary'),
+                'success': ("Страница успешно добавлена", 'success'),
+                'invalid_url': ("Некорректный URL", 'danger')}
+
     with get_connection() as conn:
         if request.method == 'POST':
             url = request.form.get("url").strip()
-            correct_url = normalize_url(url)
-            if correct_url:
+            errors = is_valid(url)
+            if not errors:
+                correct_url = normalize_url(url)
                 id = is_url_exist(conn, correct_url)
                 if id is not False:
                     flash("Страница уже существует", 'primary')
@@ -68,7 +75,8 @@ def urls():
                     id = is_url_exist(conn, correct_url)
                 return redirect(url_for('urls_id', id=id))
 
-            flash("Некорректный URL", 'danger')
+            for error in errors:
+                flash(*messages[error])
             return render_template("home.html", title=title, url=url), 422
 
         else:
