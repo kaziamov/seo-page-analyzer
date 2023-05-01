@@ -9,3 +9,4 @@
 *Zone.Identifier*
 .env
 test_db.sql
+pgdata/

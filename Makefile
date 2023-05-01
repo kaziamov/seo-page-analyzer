@@ -1,3 +1,5 @@
+PORT ?= 8000
+
 full-test:
 	poetry run pytest --show-capture=stdout --showlocals -vv
 light-test:
@@ -20,17 +22,17 @@ package-install:
 test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml
 
-
-# DEV
-
 dev:
 	poetry run flask --app page_analyzer:app --debug run
-
 server:
 	sudo service postgresql start
 
-
-#  PROD
-PORT ?= 8000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+start-server:
+	gunicorn -w 5 -b 0.0.0.0:8000 page_analyzer:app
+
+freeze:
+	poetry export --without-hashes --format=requirements.txt > requirements.txt
+up: freeze
+	docker-compose up
